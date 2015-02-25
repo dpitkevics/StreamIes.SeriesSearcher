@@ -60,10 +60,32 @@ namespace StreamIes.SeriesSearcher
                     show.genres.Add(genre);
                 }
 
+                show.imageUrl = this.RetrieveImageUrl(show.link);
+
                 results.showList.Add(show);
             }
 
             return results;
+        }
+
+        public String RetrieveImageUrl(String link)
+        {
+            WebClient client = new WebClient();
+            String htmlData = client.DownloadString(link);
+
+            if (htmlData.Contains("http://images.tvrage.com/shows/"))
+            {
+                int stringStart, stringEnd;
+
+                stringStart = htmlData.IndexOf("http://images.tvrage.com/shows/", 0);
+                htmlData = htmlData.Substring(stringStart);
+                stringEnd = htmlData.IndexOf("'>", 0);
+                htmlData = htmlData.Substring(0, stringEnd);
+
+                return htmlData;
+            }
+
+            return "";
         }
     }
 }

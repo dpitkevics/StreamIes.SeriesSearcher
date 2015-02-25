@@ -29,6 +29,7 @@ namespace StreamIes.SeriesSearcher
         public int seasons { get; set; }
         public String status { get; set; }
         public String classification { get; set; }
+        public String imageUrl { get; set; }
         public List<Genre> genres { get; set; }
 
         public Show()

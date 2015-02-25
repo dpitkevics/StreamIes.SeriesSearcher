@@ -41,7 +41,7 @@ namespace StreamIes.SeriesSearcher
             foreach (XmlNode showNode in showNodeList)
             {
                 Show show = new Show();
-                show.showId = Convert.ToInt16(showNode.SelectSingleNode("showid").InnerText);
+                show.showId = Convert.ToInt32(showNode.SelectSingleNode("showid").InnerText);
                 show.name = showNode.SelectSingleNode("name").InnerText;
                 show.link = showNode.SelectSingleNode("link").InnerText;
                 show.country = showNode.SelectSingleNode("country").InnerText;

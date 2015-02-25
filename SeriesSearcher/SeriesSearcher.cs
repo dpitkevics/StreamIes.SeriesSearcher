@@ -12,12 +12,14 @@ namespace StreamIes.SeriesSearcher
     {
         public const String BASE_URL = "http://services.tvrage.com/feeds/{0}.php?{1}={2}";
 
-        public Searcher()
-        {
+        private Func<int> callback;
 
+        public Searcher(Func<int> callback)
+        {
+            this.callback = callback;
         }
 
-        public String[] SearchShowsByQuery(String query)
+        public int SearchShowsByQuery(String query)
         {
             String requestUrl = String.Format(Searcher.BASE_URL, "search", "show", query);
 
@@ -26,12 +28,7 @@ namespace StreamIes.SeriesSearcher
 
             Console.WriteLine(xmlData);
 
-            String[] returned = new String[3];
-            returned[0] = "test1";
-            returned[1] = "test2";
-            returned[2] = "test3";
-
-            return returned;
+            return this.callback();
         }
     }
 }

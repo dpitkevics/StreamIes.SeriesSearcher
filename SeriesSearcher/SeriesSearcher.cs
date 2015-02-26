@@ -13,11 +13,11 @@ namespace StreamIes.SeriesSearcher
     {
         public const String BASE_URL = "http://services.tvrage.com/feeds/{0}.php?{1}={2}";
 
-        private Func<Results, int> callback;
+        public Func<Results, int> callback { get; set; }
+        public Func<Show, int> callbackShow { get; set; }
 
-        public Searcher(Func<Results, int> callback)
+        public Searcher()
         {
-            this.callback = callback;
         }
 
         public int SearchShowsByQuery(String query)
@@ -86,6 +86,40 @@ namespace StreamIes.SeriesSearcher
             }
 
             return "";
+        }
+
+        public int SearchShowDataById(Show show)
+        {
+            String requestUrl = String.Format(Searcher.BASE_URL, "episode_list", "sid", show.showId);
+
+            WebClient client = new WebClient();
+            String xmlData = client.DownloadString(requestUrl);
+
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xmlData);
+
+            XmlNodeList seasonNodeList = xmlDoc.SelectNodes("/Show/Episodelist/Season");
+            foreach (XmlNode seasonNode in seasonNodeList)
+            {
+                Season season = new Season();
+                season.number = Convert.ToInt16(seasonNode.Attributes.GetNamedItem("no").Value);
+
+                XmlNodeList episodeNodeList = seasonNode.SelectNodes("episode");
+                foreach (XmlNode episodeNode in episodeNodeList)
+                {
+                    Episode episode = new Episode();
+                    episode.episodeNumber = Convert.ToInt16(episodeNode.SelectSingleNode("epnum").InnerText);
+                    episode.episodeNumberInSeason = episodeNode.SelectSingleNode("seasonnum").InnerText;
+                    episode.airDate = Convert.ToDateTime(episodeNode.SelectSingleNode("airdate").InnerText);
+                    episode.title = episodeNode.SelectSingleNode("title").InnerText;
+
+                    season.episodes.Add(episode);
+                }
+
+                show.seasonsList.Add(season);
+            }
+
+            return this.callbackShow(show);
         }
     }
 }

@@ -38,6 +38,17 @@ namespace StreamIes.SeriesSearcher
             genres = new List<Genre>();
             seasonsList = new List<Season>();
         }
+
+        public int GetEpisodeCount()
+        {
+            int count = 0;
+            foreach (Season season in this.seasonsList)
+            {
+                count += season.episodes.Count;
+            }
+
+            return count;
+        }
     }
 
     public class Genre

@@ -110,7 +110,14 @@ namespace StreamIes.SeriesSearcher
                     Episode episode = new Episode();
                     episode.episodeNumber = Convert.ToInt16(episodeNode.SelectSingleNode("epnum").InnerText);
                     episode.episodeNumberInSeason = episodeNode.SelectSingleNode("seasonnum").InnerText;
-                    episode.airDate = Convert.ToDateTime(episodeNode.SelectSingleNode("airdate").InnerText);
+                    try
+                    {
+                        episode.airDate = Convert.ToDateTime(episodeNode.SelectSingleNode("airdate").InnerText);
+                    }
+                    catch (FormatException exception)
+                    {
+                        episode.airDate = new DateTime(1970, 1, 1);
+                    }
                     episode.title = episodeNode.SelectSingleNode("title").InnerText;
 
                     season.episodes.Add(episode);

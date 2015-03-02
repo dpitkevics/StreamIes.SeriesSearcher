@@ -65,6 +65,8 @@ namespace StreamIes.SeriesSearcher
         public int number { get; set; }
         public List<Episode> episodes { get; set; }
 
+        public Show show { get; set; }
+
         public Season()
         {
             episodes = new List<Episode>();
@@ -77,5 +79,8 @@ namespace StreamIes.SeriesSearcher
         public String episodeNumberInSeason { get; set; }
         public DateTime airDate { get; set; }
         public String title { get; set; }
+
+        public Season season { get; set; }
+        public Show show { get; set; }
     }
 }

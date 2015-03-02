@@ -102,12 +102,17 @@ namespace StreamIes.SeriesSearcher
             foreach (XmlNode seasonNode in seasonNodeList)
             {
                 Season season = new Season();
+                season.show = show;
+
                 season.number = Convert.ToInt16(seasonNode.Attributes.GetNamedItem("no").Value);
 
                 XmlNodeList episodeNodeList = seasonNode.SelectNodes("episode");
                 foreach (XmlNode episodeNode in episodeNodeList)
                 {
                     Episode episode = new Episode();
+                    episode.season = season;
+                    episode.show = show;
+
                     episode.episodeNumber = Convert.ToInt16(episodeNode.SelectSingleNode("epnum").InnerText);
                     episode.episodeNumberInSeason = episodeNode.SelectSingleNode("seasonnum").InnerText;
                     try
